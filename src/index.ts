@@ -11,9 +11,41 @@ app.use(json())
 
 app.post('/hash/generate', (req, res) => {
 
-  const params: any = req.body;
+  const { body } = req;
 
-  const hash = buildHash(JSON.stringify(params));
+  const contaDestino = {
+    nomeTitular: body.contaDestino.nomeTitular,
+    cpfCnpj: body.contaDestino.cpfCnpj,
+    conta: body.contaDestino.conta,
+    digito: body.contaDestino.digito,
+    agencia: body.contaDestino.agencia,
+    codigoBanco: body.contaDestino.codigoBanco,
+    tipoConta: body.contaDestino.tipoConta,
+    tipoPessoa: body.contaDestino.tipoPessoa,
+  }
+
+  const contaOrigem = {
+    nomeTitular: body.contaOrigem.nomeTitular,
+    cpfCnpj: body.contaOrigem.cpfCnpj,
+    conta: body.contaOrigem.conta,
+    digito: body.contaOrigem.digito,
+    agencia: body.contaOrigem.agencia,
+    codigoBanco: body.contaOrigem.codigoBanco,
+    tipoConta: body.contaOrigem.tipoConta,
+    tipoPessoa: body.contaOrigem.tipoPessoa,
+  }
+
+  const paramsJson = JSON.stringify({
+    bloquearOrigemSemSaldo: body.bloquearOrigemSemSaldo,
+    contaDestino: contaDestino,
+    contaOrigem: contaOrigem,
+    dataAgendada: body.dataAgendada,
+    seedHash: body.seedHash,
+    valor: body.valor,
+    tipoTransferenciaBancaria: body.tipoTransferenciaBancaria
+  }).trim()
+
+  const hash = buildHash(paramsJson);
 
   console.log('Hash gerado com sucesso 😃:\n', hash);
 
